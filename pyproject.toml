@@ -24,8 +24,12 @@ dependencies = [
     # "zhon"
 ]
 
+[tool.setuptools.package-dir]
+"" = "src"
+
 [tool.setuptools.packages.find]
-include = ["models*"]
+where = ["src"]
+include = ["mimo_audio*", "mimo_audio_tokenizer*"]
 exclude = ["assets*", "checkpoints*", "examples*", "build*", "dist*"]
 
 

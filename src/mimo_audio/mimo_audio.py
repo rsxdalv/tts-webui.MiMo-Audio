@@ -16,7 +16,7 @@ from transformers import (
 from transformers.tokenization_utils_fast import PreTrainedTokenizerFast
 
 from .process_speechdata import InputSegment, StreamingInputSegment
-from ..mimo_audio_tokenizer import MiMoAudioTokenizer
+from mimo_audio_tokenizer import MiMoAudioTokenizer
 from .templates import asr_en_templates, asr_zh_templates, tts_en_templates, tts_zh_templates
 from .modeling_mimo_audio import (
     MiMoAudioArguments,

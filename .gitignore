@@ -8,3 +8,5 @@ checkpoints/
 *.pyd
 *.pyw
 *.pyz
+
+.vscode/
