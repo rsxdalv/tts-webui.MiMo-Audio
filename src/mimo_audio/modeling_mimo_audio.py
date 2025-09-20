@@ -7,7 +7,7 @@ from typing import List, Optional, Union, cast
 import torch
 import torch.distributed as dist
 from torch import nn
-from transformers import StoppingCriteria
+from transformers import GenerationMixin, StoppingCriteria
 from transformers.cache_utils import Cache, DynamicCache
 from transformers.generation.streamers import BaseStreamer
 from transformers.generation.utils import (
@@ -221,7 +221,7 @@ class MiMoAudioArguments:
         }
 
 
-class MiMoAudioForCausalLM(Qwen2PreTrainedModel):
+class MiMoAudioForCausalLM(Qwen2PreTrainedModel, GenerationMixin):
     def __init__(
         self,
         config: MiMoAudioConfig | Qwen2Config,
@@ -508,12 +508,12 @@ class MiMoAudioForCausalLM(Qwen2PreTrainedModel):
             input_ids.shape[0], -1, (self.audio_channels + 1) * self.config.group_size
         ).transpose(1, 2)  # [B, audio_channels*group_size, T]
         # - some models don't have `Cache` support (which implies they don't expect `cache_position` in `forward`)
-        if self._supports_cache_class:
-            model_inputs["cache_position"] = cache_position
+        # if self._supports_cache_class:
+        model_inputs["cache_position"] = cache_position
         # - `cache_position` was not a mandatory input in `prepare_inputs_for_generation` for those models, and this
         #   function may be called outside of `generate`. Handle most use cases by creating `cache_position` on the fly
         #   (this alternative is not as robust as calling `generate` and letting it create `cache_position`)
-        elif cache_position is None:
+        if cache_position is None:
             past_length = (
                 past_key_values[0][0].shape[2] if past_key_values is not None else 0
             )
@@ -746,8 +746,8 @@ class MiMoAudioForCausalLM(Qwen2PreTrainedModel):
             this_peer_finished,
             synced_gpus,
             device=input_ids.device,
-            cur_len=cur_len,
-            max_length=max_length,
+            # cur_len=cur_len,
+            # max_length=max_length,
         ):
             # prepare model inputs
             model_inputs = self.prepare_inputs_for_generation(input_ids, **model_kwargs)

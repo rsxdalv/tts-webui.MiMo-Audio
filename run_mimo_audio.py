@@ -392,7 +392,7 @@ class MultiModalSpeechInterface:
                             [None, "说话者的情感状态如何？"],
                             [None, "音频中提到了哪些关键信息？"],
                             [None, "Please summarize the main points of this conversation."],
-                            [None, "What viewpoint does the speaker want to express?"]
+                            # [None, "What viewpoint does the speaker want to express?"]
                         ],
                         inputs=[audio_understanding_input_audio, audio_understanding_input_text],
                         label="Click the example to automatically fill the question"
